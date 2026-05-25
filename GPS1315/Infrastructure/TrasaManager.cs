@@ -1,6 +1,7 @@
 ﻿using GPS1315.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -42,6 +43,45 @@ namespace GPS1315.Infrastructure
                 var geometriaTrasy = odp.ListaTras[0].Geometria;
 
                 if(geometriaTrasy != null && geometriaTrasy.PunktyWspolrzednych != null)
+                {
+                    foreach (var wspolrzedne in geometriaTrasy.PunktyWspolrzednych)
+                    {
+                        // najpierw w OSRM jest dlugość, potem szerokość
+                        listaPunktow.Add(new PunktGeo(wspolrzedne[0], wspolrzedne[1]));
+                    }
+                }
+            }
+
+
+
+            return listaPunktow;
+        }
+
+
+
+        public static async Task<List<PunktGeo>> PobierzDaneOSRM(double startLon, double startLat, double metaLon, double metaLat)
+        {
+            string start = $"{startLon.ToString(CultureInfo.InvariantCulture)},{startLat.ToString(CultureInfo.InvariantCulture)}";
+            string meta = $"{metaLon.ToString(CultureInfo.InvariantCulture)},{metaLat.ToString(CultureInfo.InvariantCulture)}";
+
+            string url = $"http://router.project-osrm.org/route/v1/driving/{start};{meta}?overview=full&geometries=geojson";
+
+            var client = new HttpClient();
+
+            client.DefaultRequestHeaders.Add("User-Agent", "ProjektStudenckiGPS");
+
+            var json = await client.GetStringAsync(url);
+
+            var odp = JsonSerializer.Deserialize<OdpowiedzOSRM>(json);
+
+            var listaPunktow = new List<PunktGeo>();
+
+
+            if (odp != null && odp.ListaTras.Count > 0)
+            {
+                var geometriaTrasy = odp.ListaTras[0].Geometria;
+
+                if (geometriaTrasy != null && geometriaTrasy.PunktyWspolrzednych != null)
                 {
                     foreach (var wspolrzedne in geometriaTrasy.PunktyWspolrzednych)
                     {
