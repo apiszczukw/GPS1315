@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GPS1315.WyznaczTrasePage"
+             Title="Wyznacz trase">
+    <VerticalStackLayout Padding="10" Spacing="10">
+        <Label 
+            Text="Gdzie chcesz jechać?"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            FontSize="Header"/>
+
+        <Label Text="Wpisz adres, miasto lub nazwę miejsca startowego"
+               FontSize="Medium"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+
+        <Frame BorderColor="YellowGreen" Padding="5" CornerRadius="10">
+            <Entry x:Name="entAdresStart"/>
+        </Frame>
+
+        <Label Text="Wpisz adres, miasto lub nazwę miejsca docelowego"
+         FontSize="Medium"
+         FontAttributes="Bold"
+         HorizontalOptions="Center"/>
+
+        <Frame BorderColor="YellowGreen" Padding="5" CornerRadius="10">
+            <Entry x:Name="entAdresMeta"/>
+        </Frame>
+
+
+        <Button Text="Szukaj adresu"
+                x:Name="btnSzukaj"
+                Clicked="btnSzukaj_Clicked"
+                BackgroundColor="Yellow"/>
+
+        <Label x:Name="lblWynikStart"/>
+        <Label x:Name="lblWynikMeta"/>
+
+        <Button Text="Zatwierdź"
+                x:Name="btnZatwierdz"
+                Clicked="btnZatwierdz_Clicked"
+                BackgroundColor="Green"/>
+    </VerticalStackLayout>
+</ContentPage>
